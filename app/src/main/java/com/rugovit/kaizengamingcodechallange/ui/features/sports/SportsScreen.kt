@@ -1,4 +1,4 @@
-package com.rugovit.kaizengamingcodechallange.ui.screens
+package com.rugovit.kaizengamingcodechallange.ui.features.sports
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,7 +10,7 @@ import arrow.core.Either
 import com.rugovit.kaizengamingcodechallange.core.common.AppError
 import com.rugovit.kaizengamingcodechallange.domain.models.Event
 import com.rugovit.kaizengamingcodechallange.domain.models.Sport
-import com.rugovit.kaizengamingcodechallange.ui.viewmodel.SportsViewModel
+import com.rugovit.kaizengamingcodechallange.ui.features.sports.SportsViewModel
 import org.koin.androidx.compose.koinViewModel
 
 

@@ -1,8 +1,9 @@
-package com.rugovit.kaizengamingcodechallange.ui.viewmodel
+package com.rugovit.kaizengamingcodechallange.ui.features.sports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import com.rugovit.kaizengamingcodechallange.core.base.domain.invoke
 import com.rugovit.kaizengamingcodechallange.core.common.AppError
 import com.rugovit.kaizengamingcodechallange.core.common.asEither
 import com.rugovit.kaizengamingcodechallange.domain.models.Sport
@@ -14,13 +15,12 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import com.rugovit.kaizengamingcodechallange.core.base.domain.invoke
-
 
 class SportsViewModel(private val getSportWithEventsUseCase: GetSportWithEventsUseCase,
                       private val syncSportsDataUseCase: SyncSportsDataUseCase,
                       private val timeTickerUseCase: TimeTickerUseCase,
-                      private val toggleFavoriteUseCase: ToggleFavoriteUseCase) : ViewModel() {
+                      private val toggleFavoriteUseCase: ToggleFavoriteUseCase
+) : ViewModel() {
 
 
     // UI state for sports data
@@ -28,7 +28,7 @@ class SportsViewModel(private val getSportWithEventsUseCase: GetSportWithEventsU
         .asEither()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Companion.WhileSubscribed(5000),
             initialValue = Either.Right(emptyList()) // Initial empty state
         )
 
@@ -36,7 +36,7 @@ class SportsViewModel(private val getSportWithEventsUseCase: GetSportWithEventsU
     val currentTime: StateFlow<Long> = timeTickerUseCase()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Companion.WhileSubscribed(5000),
             initialValue = System.currentTimeMillis()
         )
 

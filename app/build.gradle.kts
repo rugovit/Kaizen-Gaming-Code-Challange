@@ -58,6 +58,7 @@ dependencies {
     kapt(libs.room.compiler)
     implementation(libs.arrow.core)
     implementation(libs.bundles.koin)
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

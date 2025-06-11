@@ -4,14 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.rugovit.kaizengamingcodechallange.ui.screens.SportsScreen
+import com.rugovit.kaizengamingcodechallange.ui.features.sports.SportsScreen
+import com.rugovit.kaizengamingcodechallange.ui.navigation.AppNavigation
 import com.rugovit.kaizengamingcodechallange.ui.theme.KaizenGamingCodeChallangeTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KaizenGamingCodeChallangeTheme {
-                SportsScreen()
+                AppNavigation()
             }
         }
     }
