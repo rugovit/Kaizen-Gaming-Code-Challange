@@ -9,7 +9,9 @@ val networkModule = module {
     // Provide ApiService as a singleton
     single {
         Retrofit.Builder()
-            .baseUrl("https://ios-kaizen.github.io/MockSports/") // Your API base URL
+            //.baseUrl("https://ios-kaizen.github.io/MockSports/") // original
+            .baseUrl("https://github.com/rugovit/temTest/blob/main/") //testing diferent ege cases
+            //TODO dont forget to change the base URL back to the original one
             .addConverterFactory(GsonConverterFactory.create()) // JSON parsing with Gson
             .build()
             .create(ApiService::class.java)
