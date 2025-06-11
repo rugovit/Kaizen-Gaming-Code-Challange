@@ -5,7 +5,7 @@ import arrow.core.Either
 import com.rugovit.kaizengamingcodechallange.core.common.AppError
 import com.rugovit.kaizengamingcodechallange.data.database.AppDatabase
 import com.rugovit.kaizengamingcodechallange.data.database.dao.SportDao
-import com.rugovit.kaizengamingcodechallange.data.database.entities.SportWithEventsEntity
+import com.rugovit.kaizengamingcodechallange.data.database.entities.SportWithEventsPOJO
 import com.rugovit.kaizengamingcodechallange.data.mapper.toEntity
 import com.rugovit.kaizengamingcodechallange.data.network.ApiService
 import kotlinx.coroutines.flow.Flow
@@ -16,9 +16,9 @@ class SportsRepositoryImpl(
     private val apiService: ApiService
 ) : SportsRepository {
 
-    override fun getSportsWithEvents(): Flow<List<SportWithEventsEntity>> = sportDao.getSportsWithEventsStream()
+    override fun getSportsWithEvents(): Flow<List<SportWithEventsPOJO>> = sportDao.getSportsWithEventsStream()
 
-    override suspend fun syncSportsData(): Either<AppError,List<SportWithEventsEntity>> {
+    override suspend fun syncSportsData(): Either<AppError,List<SportWithEventsPOJO>> {
         return try {
             // Fetch sports data from the API
             val sportsNetwork = apiService.getSports()

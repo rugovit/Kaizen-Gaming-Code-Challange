@@ -9,4 +9,3 @@ abstract class SuspendUseCase<P, R> {
     abstract suspend fun doWork(params: P): R
 }
 
-suspend operator fun <R> SuspendUseCase<Unit, R>.invoke() = invoke(Unit)

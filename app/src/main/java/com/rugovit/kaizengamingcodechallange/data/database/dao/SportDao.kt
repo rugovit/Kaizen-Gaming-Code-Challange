@@ -8,18 +8,18 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.rugovit.kaizengamingcodechallange.data.database.entities.EventEntity
 import com.rugovit.kaizengamingcodechallange.data.database.entities.SportEntity
-import com.rugovit.kaizengamingcodechallange.data.database.entities.SportWithEventsEntity
+import com.rugovit.kaizengamingcodechallange.data.database.entities.SportWithEventsPOJO
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SportDao {
     @Transaction
     @Query("SELECT * FROM sports")
-    fun getSportsWithEventsStream(): Flow<List<SportWithEventsEntity>>
+    fun getSportsWithEventsStream(): Flow<List<SportWithEventsPOJO>>
 
     @Transaction
     @Query("SELECT * FROM sports")
-    suspend fun getSportsWithEvents(): List<SportWithEventsEntity>
+    suspend fun getSportsWithEvents(): List<SportWithEventsPOJO>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSports(sports: List<SportEntity>)

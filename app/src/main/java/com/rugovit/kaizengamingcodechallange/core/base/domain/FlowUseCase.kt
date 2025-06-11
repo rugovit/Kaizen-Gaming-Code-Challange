@@ -9,4 +9,4 @@ abstract class FlowUseCase<P, R> {
 
     abstract  fun startStream(params: P): Flow<R>
 }
- operator fun <R> FlowUseCase<Unit, R>.invoke() = invoke(Unit)
+

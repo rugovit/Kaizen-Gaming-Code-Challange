@@ -9,10 +9,10 @@ sealed class AppError : Exception() {
     data class NetworkError(val exception: IOException) : AppError()
     data class ApiError(val exception: HttpException) : AppError()
     data class DatabaseError(val exception: SQLiteException) : AppError()
-    data class UnknownError(val exception: Exception) : AppError()
+    data class UnknownError(val exception: Throwable) : AppError()
 
     companion object {
-        fun fromException(exception: Exception): AppError {
+        fun fromException(exception: Throwable): AppError {
             return when (exception) {
                 is IOException -> NetworkError(exception)
                 is HttpException -> ApiError(exception)

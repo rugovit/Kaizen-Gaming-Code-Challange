@@ -4,3 +4,14 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
 }
+// Force any reference to com.intellij:annotations:12.0 → org.jetbrains:annotations:23.0.0
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            dependencySubstitution {
+                substitute(module("com.intellij:annotations:12.0"))
+                    .using(module("org.jetbrains:annotations:23.0.0"))
+            }
+        }
+    }
+}

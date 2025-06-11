@@ -9,5 +9,4 @@ abstract class UseCase<P, R> {
     abstract fun doWork(params: P): R
 }
 
-operator fun <R> UseCase<Unit, R>.invoke() = invoke(Unit)
 

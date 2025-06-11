@@ -7,5 +7,11 @@ import kotlinx.coroutines.flow.map
 
 fun <T> Flow<T>.asEither(): Flow<Either<AppError, T>> =
     this
-        .map { Either.Right(it) }
-        .catch { emit(Either.Left(AppError.fromException(it as Exception))) }
+        .map {
+            Either<AppError, T>.Right(it) as Either<AppError, T>
+        }
+        .catch {
+            emit(
+                Either<AppError, T>.Left(AppError.fromException(it)) as Either<AppError, T>
+            )
+        }

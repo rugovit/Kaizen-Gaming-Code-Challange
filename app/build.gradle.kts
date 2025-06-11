@@ -2,19 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("org.jetbrains.kotlin.kapt")
+    id("kotlin-kapt")
 }
-// Force any reference to com.intellij:annotations:12.0 → org.jetbrains:annotations:23.0.0
-allprojects {
-    configurations.all {
-        resolutionStrategy {
-            dependencySubstitution {
-                substitute(module("com.intellij:annotations:12.0"))
-                    .using(module("org.jetbrains:annotations:23.0.0"))
-            }
-        }
-    }
-}
+
 android {
     namespace = "com.rugovit.kaizengamingcodechallange"
     compileSdk = 35
@@ -62,7 +52,10 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.bundles.networking)
-    implementation(libs.bundles.database)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    kapt(libs.room.compiler)
     implementation(libs.arrow.core)
     implementation(libs.bundles.koin)
 

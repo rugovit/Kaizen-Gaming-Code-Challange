@@ -32,6 +32,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 
 # room dependencies
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
@@ -45,8 +46,8 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 
 [bundles]
 networking = ["retrofit", "converter-gson"]
-database = ["room-runtime", "room-compiler", "room-ktx", "room-paging"]
-koin = ["koin-core", "koin-android"]
+database = ["room-runtime", "room-ktx", "room-paging"]
+koin = ["koin-core", "koin-android","koin-compose"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

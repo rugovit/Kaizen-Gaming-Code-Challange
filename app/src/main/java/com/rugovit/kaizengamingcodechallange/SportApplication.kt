@@ -4,6 +4,8 @@ import android.app.Application
 import com.rugovit.kaizengamingcodechallange.di.data.databaseModule
 import com.rugovit.kaizengamingcodechallange.di.data.networkModule
 import com.rugovit.kaizengamingcodechallange.di.data.repositoryModule
+import com.rugovit.kaizengamingcodechallange.di.domain.useCaseModule
+import com.rugovit.kaizengamingcodechallange.di.view.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
@@ -12,7 +14,7 @@ class SportApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@SportApplication)
-            modules(listOf(databaseModule, networkModule, repositoryModule))
+            modules(listOf(databaseModule, networkModule, repositoryModule, useCaseModule,viewModelModule))
         }
     }
 }
