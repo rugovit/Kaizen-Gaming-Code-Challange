@@ -64,7 +64,10 @@ class SportsViewModel(
         viewModelScope.launch {
             timeTickerUseCase()
                 .collect { now ->
-                    _state.update { it.copy(currentTime = now) }
+                    _state.update { state ->
+                        state.copy(
+                            currentTime = System.currentTimeMillis() / 1000
+                        )}
                 }
         }
 

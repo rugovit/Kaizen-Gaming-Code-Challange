@@ -28,7 +28,6 @@ import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.Sports
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsContract.UiEffect
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsContract.UiIntent
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsViewModel
-import com.rugovit.kaizengamingcodechallange.ui.features.sports.views.components.SportSection
 import com.rugovit.kaizengamingcodechallange.ui.theme.KaizenGamingCodeChallangeTheme
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
@@ -141,8 +140,7 @@ fun SportsScreenPreview() {
     val uiState = SportsContract.UiState(
         isLoading = false,
         sports = sports,
-        error = null,
-        currentTime = 0L
+        error = null
     )
 
     KaizenGamingCodeChallangeTheme {
@@ -157,7 +155,7 @@ fun SportsScreenPreview() {
                 items(uiState.sports) { sport ->
                     SportSection(
                         sport = sport,
-                        currentTime = uiState.currentTime,
+                        currentTime = System.currentTimeMillis()/1000,
                         onToggleFavorite = { }
                     )
                 }

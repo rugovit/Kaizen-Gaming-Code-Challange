@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Kaizen Gaming Code Challange</string>
+    <string name="app_name">Kaizen Code Challange</string>
+
+    <string name="time_seconds">s</string>
+    <string name="time_minutes">m</string>
+    <string name="time_hours">h</string>
+    <string name="time_days">d</string>
+
+    <string name="started">Started</string>
+    seconds
+
 </resources>

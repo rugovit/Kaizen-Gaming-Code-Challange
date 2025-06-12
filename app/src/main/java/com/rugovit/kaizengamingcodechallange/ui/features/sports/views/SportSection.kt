@@ -1,4 +1,4 @@
-package com.rugovit.kaizengamingcodechallange.ui.features.sports.views.components
+package com.rugovit.kaizengamingcodechallange.ui.features.sports.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,15 +23,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rugovit.kaizengamingcodechallange.ui.components.FavoriteToggle
-import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Sport
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Event
+import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Sport
 
 @Composable
 fun SportSection(
@@ -39,8 +39,8 @@ fun SportSection(
     currentTime: Long,
     onToggleFavorite: (String) -> Unit
 ) {
-    var isExpanded by remember { mutableStateOf(true) }
-    var showOnlyFavorites by remember { mutableStateOf(false) }
+    var isExpanded by rememberSaveable { mutableStateOf(true) }
+    var showOnlyFavorites by rememberSaveable { mutableStateOf(false) }
 
     val displayedEvents = if (showOnlyFavorites) {
         sport.events.filter { it.isFavorite }
@@ -90,7 +90,6 @@ fun SportSection(
             }
         }
 
-        // Events FlowRow
         if (isExpanded && displayedEvents.isNotEmpty()) {
             Surface(
                 color = MaterialTheme.colorScheme.surface,
@@ -106,6 +105,7 @@ fun SportSection(
                     displayedEvents.forEach { event: Event ->
                         EventItem(
                             event = event,
+                            currentTime = currentTime,
                             onToggleFavorite = { onToggleFavorite(event.id) }
                         )
                     }
@@ -122,14 +122,13 @@ fun SportSectionPreview() {
         id = "sport1",
         name = "Preview Sport",
         events = listOf(
-            Event(id = "e1", sportId = "sport1", name = "Team A - Team B", timeRemaining = "1h 0m 0s", isFavorite = false),
-            Event(id = "e2", sportId = "sport1", name = "Team C - Team D", timeRemaining = "2h 0m 0s", isFavorite = true)
+            Event(id = "e1", sportId = "sport1", startTime = getRandTime()  , competitor1 = "Team A", competitor2 = "Team B",isFavorite = false),
+            Event(id = "e2", sportId = "sport1",  startTime = getRandTime() ,competitor1 = "Team C", competitor2 = "Team D", isFavorite = true)
         )
     )
-    val currentTime = 0L
     SportSection(
         sport = sport,
-        currentTime = currentTime,
+        currentTime = System.currentTimeMillis()/1000,
         onToggleFavorite = {}
     )
 }
