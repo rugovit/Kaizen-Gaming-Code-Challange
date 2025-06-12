@@ -10,7 +10,7 @@ val networkModule = module {
     single {
         Retrofit.Builder()
             //.baseUrl("https://ios-kaizen.github.io/MockSports/") // original
-            .baseUrl("https://github.com/rugovit/temTest/blob/main/") //testing diferent ege cases
+            .baseUrl("https://raw.githubusercontent.com/rugovit/temTest/refs/heads/main/") //testing diferent ege cases
             //TODO dont forget to change the base URL back to the original one
             .addConverterFactory(GsonConverterFactory.create()) // JSON parsing with Gson
             .build()

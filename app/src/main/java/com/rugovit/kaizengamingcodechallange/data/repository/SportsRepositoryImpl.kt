@@ -34,7 +34,15 @@ class SportsRepositoryImpl(
                     eventNetwork.toEntity(existingEvent?.isFavorite ?: false)
                 }
             }
+            //add logic  to remove events that are not in the new data as this is test project,
+            // on real  production app   ww would do this in a more sophisticated way such as using a diffing algorithm or a more complex sync strategy
 
+            val newEventIds = eventsEntities.map { it.eventId }.toSet()
+            val eventsToDelete = sportDao.getAllEvents().filterNot { it.eventId in newEventIds }
+            // Delete events that are not in the new data
+            if (eventsToDelete.isNotEmpty()) {
+                sportDao.deleteEvents(eventsToDelete)
+            }
             // Insert data into the database within a transaction
             database.withTransaction {
                 sportDao.insertSports(sportsEntities)

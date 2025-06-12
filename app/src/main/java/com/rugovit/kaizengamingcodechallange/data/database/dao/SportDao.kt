@@ -32,5 +32,8 @@ interface SportDao {
 
     @Query("UPDATE events SET isFavorite = NOT isFavorite WHERE eventId = :eventId")
     suspend fun toggleFavorite(eventId: String)
+
+    @Query("DELETE FROM events WHERE eventId IN (:eventsIds)")
+    suspend fun deleteEvents(eventsIds: List<EventEntity>)
 }
 
