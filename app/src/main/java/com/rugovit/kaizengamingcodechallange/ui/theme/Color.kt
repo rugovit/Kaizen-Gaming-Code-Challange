@@ -7,29 +7,39 @@ import androidx.compose.ui.graphics.Color
 val Blue = Color(0xFF0094FF)
 val Orange = Color(0xFFE7410F)
 val Yellow = Color(0xFFFFAB30)
+val LighterGray = Color(0xFFD3D3D3) // Light gray for surfaces
+val LightGray = Color(0xFF989797) // Slightly lighter gray for surfaces
 val DarkGray = Color(0xFF343434)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 
-val LightColorScheme = lightColorScheme(
-    primary = Blue,
-    secondary = Orange,
-    //tertiary = Yellow, TODO: Add this as tertiary color maybe
-    background = DarkGray,
-    surface = White,
-    onPrimary = White,
-    onSecondary = White,
-    onBackground = White,
-    onSurface = Black
+val LightColorScheme = lightColorScheme( //TODO pick a better color scheme for light mode
+    // Brand
+    primary            = Blue,
+    onPrimary          = White,
+    // Accent #1
+    secondary          = Orange,
+    onSecondary        = White,
+    // Accent #2 (for your yellow star)
+    tertiary           = Yellow,
+    onTertiary         = Black,
+    // Canvas
+    background         = White,
+    onBackground       = Black,
+    // Surfaces (cards, sheets, headers)
+    surface            = DarkGray,
+    onSurface          = White,
+    surfaceVariant     = LightGray,
+    onSurfaceVariant   = LighterGray
 )
+
 val DarkColorScheme = darkColorScheme(
     primary = Blue,
     secondary = Orange,
-    //tertiary = Yellow, TODO: Add this as tertiary color maybe
     background = DarkGray,
-    surface = White,
+    surface = LighterGray,
     onPrimary = White,
     onSecondary = White,
     onBackground = White,
-    onSurface = Black
+    onSurface = White
 )

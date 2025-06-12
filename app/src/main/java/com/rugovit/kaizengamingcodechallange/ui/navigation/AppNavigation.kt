@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.rugovit.kaizengamingcodechallange.ui.features.landing.LandingScreen
-import com.rugovit.kaizengamingcodechallange.ui.features.sports.SportsScreen
+import com.rugovit.kaizengamingcodechallange.ui.features.landing.views.LandingScreen
+import com.rugovit.kaizengamingcodechallange.ui.features.sports.views.SportsScreen
 
 object Routes {
     const val LANDING = "landing"

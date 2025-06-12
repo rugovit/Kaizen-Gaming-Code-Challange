@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.rugovit.kaizengamingcodechallange.ui.features.sports.SportsScreen
 import com.rugovit.kaizengamingcodechallange.ui.navigation.AppNavigation
 import com.rugovit.kaizengamingcodechallange.ui.theme.KaizenGamingCodeChallangeTheme
 

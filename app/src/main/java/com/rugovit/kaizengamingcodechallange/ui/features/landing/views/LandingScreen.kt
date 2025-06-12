@@ -1,4 +1,4 @@
-package com.rugovit.kaizengamingcodechallange.ui.features.landing
+package com.rugovit.kaizengamingcodechallange.ui.features.landing.views
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

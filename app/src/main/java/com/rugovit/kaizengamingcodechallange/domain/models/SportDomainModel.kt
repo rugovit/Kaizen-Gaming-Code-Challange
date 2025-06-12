@@ -1,7 +1,7 @@
 package com.rugovit.kaizengamingcodechallange.domain.models
 
-data class Sport(
+data class SportDomainModel(
     val id: String,
     val name: String,
-    val events: List<Event>
+    val eventDomainModels: List<EventDomainModel>
 )

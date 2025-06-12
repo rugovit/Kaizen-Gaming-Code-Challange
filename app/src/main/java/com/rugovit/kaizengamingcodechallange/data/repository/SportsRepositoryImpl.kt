@@ -41,15 +41,13 @@ class SportsRepositoryImpl(
             val eventsToDelete = sportDao.getAllEvents().filterNot { it.eventId in newEventIds }
             // Delete events that are not in the new data
             if (eventsToDelete.isNotEmpty()) {
-                sportDao.deleteEvents(eventsToDelete)
+                sportDao.deleteEvents(eventsToDelete.map { it.eventId })
             }
-            // Insert data into the database within a transaction
+
             database.withTransaction {
                 sportDao.insertSports(sportsEntities)
                 sportDao.insertEvents(eventsEntities)
             }
-
-            // return success
             return Either.Right(sportDao.getSportsWithEvents())
         }
         catch (e: Exception) {

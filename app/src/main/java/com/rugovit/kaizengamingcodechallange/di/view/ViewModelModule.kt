@@ -1,6 +1,6 @@
 package com.rugovit.kaizengamingcodechallange.di.view
 
-import com.rugovit.kaizengamingcodechallange.ui.features.sports.SportsViewModel
+import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

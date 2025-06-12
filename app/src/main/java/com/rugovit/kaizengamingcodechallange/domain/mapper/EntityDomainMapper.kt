@@ -2,22 +2,22 @@ package com.rugovit.kaizengamingcodechallange.domain.mapper
 
 import com.rugovit.kaizengamingcodechallange.data.database.entities.EventEntity
 import com.rugovit.kaizengamingcodechallange.data.database.entities.SportWithEventsPOJO
-import com.rugovit.kaizengamingcodechallange.domain.models.Event
-import com.rugovit.kaizengamingcodechallange.domain.models.Sport
+import com.rugovit.kaizengamingcodechallange.domain.models.EventDomainModel
+import com.rugovit.kaizengamingcodechallange.domain.models.SportDomainModel
 
-fun SportWithEventsPOJO.toDomain(): Sport{
-    return Sport(
+fun SportWithEventsPOJO.toDomain(): SportDomainModel{
+    return SportDomainModel(
         id = sport.sportId,
         name = sport.sportName,
-        events = events.map { it.toDomain() }
+        eventDomainModels = events.map { it.toDomain() }
     )
 }
-fun List<SportWithEventsPOJO>.toDomain(): List<Sport> {
+fun List<SportWithEventsPOJO>.toDomain(): List<SportDomainModel> {
     return map { it.toDomain() }
 }
 
-fun EventEntity.toDomain(): Event {
-    return Event(
+fun EventEntity.toDomain(): EventDomainModel {
+    return EventDomainModel(
         id = eventId,
         sportId = sportId,
         name = eventName,
