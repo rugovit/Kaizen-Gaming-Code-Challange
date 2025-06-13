@@ -3,7 +3,11 @@ package com.rugovit.kaizengamingcodechallange.ui.features.sports.views
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -16,10 +20,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rugovit.kaizengamingcodechallange.R
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Event
+import java.util.Locale
 
 @Composable
 fun EventItem(
@@ -30,8 +37,11 @@ fun EventItem(
 
     Column(
         modifier = Modifier
-            .padding(all = 8.dp)
-            .background(MaterialTheme.colorScheme.surface),
+            .padding(horizontal = 0.dp, vertical = 6.dp)
+            .background(MaterialTheme.colorScheme.surface)
+            .width(92.dp)
+        ,
+
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -43,12 +53,11 @@ fun EventItem(
             val minutes = (secondsRemaining % 3600) / 60
             val secs = secondsRemaining % 60
 
-            buildString {
-                if (days > 0) append("${days}${stringResource(R.string.time_days)} ")
-                if (hours > 0 || days > 0) append("${hours}${stringResource(R.string.time_hours)} ")
-                if (minutes > 0 || hours > 0 || days > 0) append("${minutes}${stringResource(R.string.time_minutes)} ")
-                append("${secs}${stringResource(R.string.time_seconds)} ")
-            }.trim()
+            String.format(
+                Locale.US,
+                "%02d:%02d:%02d:%02d",
+                days, hours, minutes, secs
+            )
         } else {
             stringResource(R.string.started)
         }
@@ -57,7 +66,9 @@ fun EventItem(
             text = timeText,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
             modifier = Modifier
+                .fillMaxWidth()
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.primary,
@@ -65,16 +76,17 @@ fun EventItem(
                 )
                 .padding(4.dp)
         )
-        IconButton(onClick = { onToggleFavorite(event.id) }) {
+        IconButton(onClick = { onToggleFavorite(event.id) },
+            modifier = Modifier.size(30.dp)) {
             Icon(
                 imageVector = if (event.isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
                 contentDescription = if (event.isFavorite) "Unfavorite" else "Favorite",
                 tint = if (event.isFavorite) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurface
             )
         }
-        Text(text = event.competitor1, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyMedium)
+        Text(text = event.competitor1,textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyMedium,maxLines = 1,overflow = TextOverflow.Ellipsis)
         Text(text = "vs", color = MaterialTheme.colorScheme.secondary, style = MaterialTheme.typography.bodyMedium)
-        Text(text = event.competitor2, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyMedium)
+        Text(text = event.competitor2, textAlign = TextAlign.Center,color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyMedium,maxLines = 1,overflow = TextOverflow.Ellipsis )
     }
 }
 

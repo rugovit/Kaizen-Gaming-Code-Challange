@@ -34,12 +34,21 @@ val LightColorScheme = lightColorScheme( //TODO pick a better color scheme for l
 )
 
 val DarkColorScheme = darkColorScheme(
-    primary = Blue,
-    secondary = Orange,
-    background = DarkGray,
-    surface = LighterGray,
-    onPrimary = White,
-    onSecondary = White,
-    onBackground = White,
-    onSurface = White
+    // Brand
+    primary            = Blue,
+    onPrimary          = White,
+    // Accent #1
+    secondary          = Orange,
+    onSecondary        = White,
+    // Accent #2 (for your yellow star)
+    tertiary           = Yellow,
+    onTertiary         = Black,
+    // Canvas
+    background         = White,
+    onBackground       = Black,
+    // Surfaces (cards, sheets, headers)
+    surface            = DarkGray,
+    onSurface          = White,
+    surfaceVariant     = LightGray,
+    onSurfaceVariant   = LighterGray
 )

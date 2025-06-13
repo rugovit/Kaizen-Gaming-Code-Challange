@@ -47,7 +47,6 @@ fun SportSection(
     } else {
         sport.events
     }
-
     Column(modifier = Modifier.fillMaxWidth()) {
         // Header
         Surface(
@@ -99,15 +98,17 @@ fun SportSection(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp),
+                    maxItemsInEachRow = 4,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     displayedEvents.forEach { event: Event ->
-                        EventItem(
-                            event = event,
-                            currentTime = currentTime,
-                            onToggleFavorite = { onToggleFavorite(event.id) }
-                        )
+                            EventItem(
+                                event = event,
+                                currentTime = currentTime,
+                                onToggleFavorite = { onToggleFavorite(event.id) }
+                            )
+
                     }
                 }
             }
