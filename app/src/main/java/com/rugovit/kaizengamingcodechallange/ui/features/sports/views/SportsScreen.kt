@@ -35,32 +35,50 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rugovit.kaizengamingcodechallange.R
+import com.rugovit.kaizengamingcodechallange.core.common.AppError
+import com.rugovit.kaizengamingcodechallange.core.common.toUserMessage
 import com.rugovit.kaizengamingcodechallange.ui.components.FavoriteToggle
 import com.rugovit.kaizengamingcodechallange.ui.components.SportsToolbar
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Event
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Sport
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsContract
+import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsContract.UiEffect
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsContract.UiIntent
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsViewModel
 import com.rugovit.kaizengamingcodechallange.ui.theme.KaizenGamingCodeChallangeTheme
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SportsScreen(viewModel: SportsViewModel = koinViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
-
+    var pendingError by remember { mutableStateOf<AppError?>(null) }
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collectLatest { effect ->
+            if (effect is UiEffect.ShowError) pendingError = effect.error
+        }
+    }
+    pendingError?.let { err ->
+        val message= err.toUserMessage()
+        LaunchedEffect(err) {
+            snackbarHostState.showSnackbar(message = message)
+            pendingError = null
+        }
+    }
     SportsScreenContent(
         uiState = uiState,
         onToggleFavorite = { eventId -> viewModel.process(UiIntent.ToggleFavorite(eventId)) },

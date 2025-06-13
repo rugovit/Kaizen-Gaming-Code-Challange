@@ -108,7 +108,12 @@ class SportsViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true)}
             syncSportsDataUseCase().fold(
-                { error -> _effect.emit(SportsContract.UiEffect.ShowError(error)) },
+                {
+                    error ->
+                    _state.update { it.copy(isLoading = false)}
+                    _effect.emit(SportsContract.UiEffect.ShowError(error))
+
+                },
                 {   _state.update { it.copy(isLoading = false)}}
             )
         }
