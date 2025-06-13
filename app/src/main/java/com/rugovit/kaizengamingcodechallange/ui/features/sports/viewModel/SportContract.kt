@@ -21,7 +21,7 @@ object SportsContract {
      * UI state data. Immutable snapshot of the screen.
      */
     data class UiState(
-        val isLoading: Boolean = false,
+        val isLoading: Boolean = true,
         val sports: List<Sport> = emptyList(),
         val error: AppError? = null,
         val currentTime: Long = System.currentTimeMillis()

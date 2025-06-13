@@ -1,5 +1,4 @@
 package com.rugovit.kaizengamingcodechallange.ui.features.sports.views
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,16 +11,22 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rugovit.kaizengamingcodechallange.core.common.AppError
+import com.rugovit.kaizengamingcodechallange.core.common.toUserMessage
 import com.rugovit.kaizengamingcodechallange.ui.components.SportsToolbar
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Sport
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.viewModel.SportsContract
@@ -34,23 +39,38 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SportsScreen(viewModel: SportsViewModel = koinViewModel()) {
+
+
     val uiState by viewModel.uiState.collectAsState()
     val currentError = uiState.error
+    var pendingError by remember { mutableStateOf<AppError?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // Handle one-off effects
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is UiEffect.ShowError -> {
-                    // Show Snackbar or Toast here
+                    pendingError = effect.error
                 }
             }
+        }
+    }
+    pendingError?.let { error ->
+        val message = error.toUserMessage()
+        LaunchedEffect(error) {
+            snackbarHostState.showSnackbar(
+                message = message,
+                actionLabel = "OK"
+            )
+            pendingError = null
         }
     }
 
     Scaffold(
         topBar = { SportsToolbar() },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         when {
             currentError != null -> ErrorState(

@@ -2,6 +2,7 @@ package com.rugovit.kaizengamingcodechallange.core.common
 
 import androidx.sqlite.SQLiteException
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 
 
@@ -13,12 +14,14 @@ sealed class AppError : Exception() {
 
     companion object {
         fun fromException(exception: Throwable): AppError {
+            Timber.e(exception, "An error occurred: ${exception.message}")
             return when (exception) {
                 is IOException -> NetworkError(exception)
                 is HttpException -> ApiError(exception)
                 is SQLiteException -> DatabaseError(exception)
                 else -> UnknownError(exception)
             }
+
         }
     }
 }

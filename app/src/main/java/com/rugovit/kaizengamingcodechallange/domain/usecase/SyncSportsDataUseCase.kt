@@ -16,8 +16,8 @@ class SyncSportsDataUseCase(
     override suspend fun doWork(params: Unit): Either<AppError, List<SportDomainModel>> {
         return repository.syncSportsData().flatMap {
             return when (it) {
-                is Either.Left<AppError> -> Either.Left<AppError>(it.value)
-                is Either.Right<List<SportWithEventsPOJO>> -> Either.Right<List<SportDomainModel>>(it.value.toDomain())
+                is  AppError -> Either.Left<AppError>(it)
+                is List<SportWithEventsPOJO> -> Either.Right<List<SportDomainModel>>(it.toDomain())
                 else -> {
                     // This case should not happen, but if it does, we return an unknown error
                     Either.Left<AppError>(AppError.UnknownError(Exception("Unexpected result from syncSportsData")))
