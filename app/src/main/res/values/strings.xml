@@ -1,13 +1,18 @@
 <resources>
     <string name="app_name">Kaizen Code Challange</string>
 
+    <!-- time strings -->
     <string name="time_seconds">s</string>
     <string name="time_minutes">m</string>
     <string name="time_hours">h</string>
     <string name="time_days">d</string>
 
+    <!-- Entities -->
     <string name="started">Started</string>
-
+    
+    <!--Landing screen -->
+    <string name="go_to_sports">Go to Sports</string>
+    <!-- Error messages -->
     <string name="error_no_internet">Network error</string>
     <string name="error_server">Server error</string>
     <string name="error_database">Database error</string>

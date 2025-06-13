@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.rugovit.kaizengamingcodechallange.R
 import com.rugovit.kaizengamingcodechallange.ui.components.SportsToolbar
 
 @Composable
@@ -29,7 +31,7 @@ fun LandingScreen(onNavigateToSports: () -> Unit) {
 
         ) {
             Button(onClick = onNavigateToSports) {
-                Text("Go to Sports")
+                Text(stringResource(R.string.go_to_sports))
             }
         }
     }
