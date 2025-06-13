@@ -12,10 +12,9 @@ room = "2.7.1"
 retrofit = "2.12.0"
 arrow = "1.2.1"
 koin = "3.5.3"
-navigation-compose = "2.9.0"
+navigationCompose = "2.9.0"
 iconExtended = "1.7.8"
 timber = "5.0.1"
-
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,8 +23,10 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+# Use BOM to manage compose versions
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -35,8 +36,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-material-icons-extended-android = { group = "androidx.compose.material", name = "material-icons-extended-android", version.ref = "iconExtended" }
-androidx-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber"}
-
+androidx-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 androidx-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
@@ -44,20 +44,20 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 
-# room dependencies
+# Room
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 
-# retrofit dependencies
+# Retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 
 [bundles]
 networking = ["retrofit", "converter-gson"]
 database = ["room-runtime", "room-ktx", "room-paging"]
-koin = ["koin-core", "koin-android","koin-compose"]
+koin = ["koin-core", "koin-android", "koin-compose"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

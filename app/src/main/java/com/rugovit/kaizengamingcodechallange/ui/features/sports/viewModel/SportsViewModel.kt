@@ -41,6 +41,7 @@ class SportsViewModel(
         collectIntents()
 
         viewModelScope.launch {
+            _state.update { it.copy(isLoading = true)}
             getSportWithEventsUseCase()
                 .asEither()
                 .collect { result: Either<AppError, List<SportDomainModel>> ->
@@ -105,6 +106,7 @@ class SportsViewModel(
 
     private fun syncData() {
         viewModelScope.launch {
+            _state.update { it.copy(isLoading = true)}
             syncSportsDataUseCase().fold(
                 { error -> _effect.emit(SportsContract.UiEffect.ShowError(error)) },
                 { /* no-op; data flows via getSportWithEventsUseCase */ }

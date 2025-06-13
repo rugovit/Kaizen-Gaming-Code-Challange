@@ -6,7 +6,7 @@ import timber.log.Timber
 import java.io.IOException
 
 
-sealed class AppError : Exception() {
+sealed class AppError {
     data class NetworkError(val exception: IOException) : AppError()
     data class ApiError(val exception: HttpException) : AppError()
     data class DatabaseError(val exception: SQLiteException) : AppError()
