@@ -170,7 +170,7 @@ fun SportsScreenContent(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(8.dp),
+                                        .padding(horizontal = 8.dp, vertical = 1.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
@@ -187,7 +187,7 @@ fun SportsScreenContent(
                                             color = MaterialTheme.colorScheme.onBackground
                                         )
                                     }
-                                    Row {
+                                    Row ( verticalAlignment = Alignment.CenterVertically){
                                         FavoriteToggle(
                                             isFavorite = showOnlyFavs,
                                             onToggle = { showFavsMap[sport.id] = it }
