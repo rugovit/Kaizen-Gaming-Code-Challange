@@ -188,8 +188,8 @@ fun SportsScreenContent(
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
-                                            text = sport.name,
-                                            style = MaterialTheme.typography.headlineSmall,
+                                            text = sport.name.uppercase(),
+                                            style = MaterialTheme.typography.titleMedium,
                                             color = MaterialTheme.colorScheme.onBackground
                                         )
                                     }
