@@ -2,6 +2,7 @@ package com.rugovit.kaizengamingcodechallange.di.data
 
 import androidx.room.Room
 import com.rugovit.kaizengamingcodechallange.data.database.AppDatabase
+import com.rugovit.kaizengamingcodechallange.data.database.RoomTransactionRunner
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
@@ -16,4 +17,8 @@ val databaseModule = module {
     }
     // Provide SportDao as a singleton, retrieved from AppDatabase
     single { get<AppDatabase>().sportDao() }
+    // add transaction runner
+    single {
+         RoomTransactionRunner(get<AppDatabase>())
+    }
 }

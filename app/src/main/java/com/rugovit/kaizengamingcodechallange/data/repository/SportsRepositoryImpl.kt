@@ -3,6 +3,7 @@ package com.rugovit.kaizengamingcodechallange.data.repository
 import androidx.room.withTransaction
 import arrow.core.Either
 import com.rugovit.kaizengamingcodechallange.core.common.AppError
+import com.rugovit.kaizengamingcodechallange.core.common.TransactionRunner
 import com.rugovit.kaizengamingcodechallange.data.database.AppDatabase
 import com.rugovit.kaizengamingcodechallange.data.database.dao.SportDao
 import com.rugovit.kaizengamingcodechallange.data.database.entities.SportWithEventsPOJO
@@ -11,7 +12,7 @@ import com.rugovit.kaizengamingcodechallange.data.network.ApiService
 import kotlinx.coroutines.flow.Flow
 
 class SportsRepositoryImpl(
-    private val database: AppDatabase,
+    private val tx: TransactionRunner,
     private val sportDao: SportDao,
     private val apiService: ApiService
 ) : SportsRepository {
@@ -44,7 +45,7 @@ class SportsRepositoryImpl(
                 sportDao.deleteEvents(eventsToDelete.map { it.eventId })
             }
 
-            database.withTransaction {
+            tx.run {
                 sportDao.insertSports(sportsEntities)
                 sportDao.insertEvents(eventsEntities)
             }
