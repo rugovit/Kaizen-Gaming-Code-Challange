@@ -5,8 +5,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,8 +42,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.rugovit.kaizengamingcodechallange.R
 import com.rugovit.kaizengamingcodechallange.ui.components.FavoriteToggle
 import com.rugovit.kaizengamingcodechallange.ui.components.SportsToolbar
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Event
@@ -63,7 +64,8 @@ fun SportsScreen(viewModel: SportsViewModel = koinViewModel()) {
     SportsScreenContent(
         uiState = uiState,
         onToggleFavorite = { eventId -> viewModel.process(UiIntent.ToggleFavorite(eventId)) },
-        snackbarHostState = snackbarHostState
+        snackbarHostState = snackbarHostState,
+        onRetry = { viewModel.process(UiIntent.SyncData) }
     )
 }
 
@@ -72,7 +74,8 @@ fun SportsScreen(viewModel: SportsViewModel = koinViewModel()) {
 fun SportsScreenContent(
     uiState: SportsContract.UiState,
     onToggleFavorite: (String) -> Unit,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    onRetry: () -> Unit = { }
 ) {
     val listState = rememberLazyListState()
     val freezeTime = remember { mutableStateOf(uiState.currentTime) }
@@ -99,14 +102,36 @@ fun SportsScreenContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(padding).background(MaterialTheme.colorScheme.surface)
         ) {
             if (uiState.isLoading && uiState.sports.isEmpty()) {
                 // Initial load spinner
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
-            } else {
+            }
+            else if(!uiState.isLoading && uiState.sports.isEmpty()){
+            // Empty state view
+            Column(
+                modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = stringResource(R.string.sport_screen_no_events),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(8.dp)
+                )
+                Button(
+                    onClick = onRetry,
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Text(text =  stringResource(R.string.sport_screen_retry))
+                }
+            }
+        }
+            else {
                 LazyColumn(
                     state = listState,
                     modifier = Modifier

@@ -7,6 +7,7 @@ import retrofit2.http.GET
 interface ApiService {
     //@GET("sports_damaged.json")
     //@GET("sports_half.json")
+    //@GET("sports_nodata.json")
     @GET("sports.json")
     suspend fun getSports(): List<SportNetwork>
 }

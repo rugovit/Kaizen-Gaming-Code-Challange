@@ -3,7 +3,6 @@ package com.rugovit.kaizengamingcodechallange.ui.features.sports.views
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,7 +59,7 @@ fun EventItem(
                 days, hours, minutes, secs
             )
         } else {
-            stringResource(R.string.started)
+            stringResource(R.string.sport_screen_started)
         }
 
         Text(

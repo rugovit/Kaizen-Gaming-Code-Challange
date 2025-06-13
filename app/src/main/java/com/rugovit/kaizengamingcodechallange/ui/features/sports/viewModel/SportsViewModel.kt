@@ -109,7 +109,7 @@ class SportsViewModel(
             _state.update { it.copy(isLoading = true)}
             syncSportsDataUseCase().fold(
                 { error -> _effect.emit(SportsContract.UiEffect.ShowError(error)) },
-                { /* no-op; data flows via getSportWithEventsUseCase */ }
+                {   _state.update { it.copy(isLoading = false)}}
             )
         }
     }
