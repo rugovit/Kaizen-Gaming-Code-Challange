@@ -1,5 +1,6 @@
 package com.rugovit.kaizengamingcodechallange.ui.features.sports.views
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -32,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.rugovit.kaizengamingcodechallange.ui.components.FavoriteToggle
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Event
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Sport
+import androidx.compose.foundation.lazy.grid.items
 
 @Composable
 fun SportSection(
@@ -90,29 +94,37 @@ fun SportSection(
         }
 
         if (isExpanded && displayedEvents.isNotEmpty()) {
-            Surface(
-                color = MaterialTheme.colorScheme.surface,
-                modifier = Modifier.fillMaxWidth()
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                FlowRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    maxItemsInEachRow = 4,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    displayedEvents.forEach { event: Event ->
-                            EventItem(
-                                event = event,
-                                currentTime = currentTime,
-                                onToggleFavorite = { onToggleFavorite(event.id) }
-                            )
-
+                displayedEvents
+                    .chunked(4)
+                    .forEach { rowEvents ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            rowEvents.forEach { event ->
+                                EventItem(
+                                    event = event,
+                                    currentTime = currentTime,
+                                    onToggleFavorite = { onToggleFavorite(event.id) }
+                                )
+                            }
+                            // fill out the last row so everything aligns
+                            if (rowEvents.size < 4) {
+                                repeat(4 - rowEvents.size) {
+                                    Spacer(modifier = Modifier.width(92.dp))
+                                }
+                            }
+                        }
                     }
-                }
             }
         }
+
     }
 }
 
