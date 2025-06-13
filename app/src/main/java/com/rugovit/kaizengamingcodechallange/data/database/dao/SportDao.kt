@@ -30,10 +30,16 @@ interface SportDao {
     @Query("SELECT * FROM events")
     suspend fun getAllEvents(): List<EventEntity>
 
+    @Query("SELECT * FROM sports")
+    suspend fun getAllSports(): List<SportEntity>
+
     @Query("UPDATE events SET isFavorite = NOT isFavorite WHERE eventId = :eventId")
     suspend fun toggleFavorite(eventId: String)
 
     @Query("DELETE FROM events WHERE eventId IN (:eventsIds)")
     suspend fun deleteEvents(eventsIds: List<String>)
+
+    @Query("DELETE FROM sports WHERE sportId IN (:sportsIds)")
+    suspend fun deleteSports(sportsIds: List<String>)
 }
 

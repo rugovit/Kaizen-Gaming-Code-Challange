@@ -1,10 +1,8 @@
 package com.rugovit.kaizengamingcodechallange.data.repository
 
-import androidx.room.withTransaction
 import arrow.core.Either
 import com.rugovit.kaizengamingcodechallange.core.common.AppError
 import com.rugovit.kaizengamingcodechallange.core.common.TransactionRunner
-import com.rugovit.kaizengamingcodechallange.data.database.AppDatabase
 import com.rugovit.kaizengamingcodechallange.data.database.dao.SportDao
 import com.rugovit.kaizengamingcodechallange.data.database.entities.SportWithEventsPOJO
 import com.rugovit.kaizengamingcodechallange.data.mapper.toEntity
@@ -39,13 +37,22 @@ class SportsRepositoryImpl(
             // on real  production app   ww would do this in a more sophisticated way such as using a diffing algorithm or a more complex sync strategy
 
             val newEventIds = eventsEntities.map { it.eventId }.toSet()
-            val eventsToDelete = sportDao.getAllEvents().filterNot { it.eventId in newEventIds }
-            // Delete events that are not in the new data
-            if (eventsToDelete.isNotEmpty()) {
-                sportDao.deleteEvents(eventsToDelete.map { it.eventId })
-            }
+            val newSportIds = sportsEntities.map { it.sportId }.toSet()
 
+            val staleEvents = sportDao.getAllEvents().filterNot { it.eventId in newEventIds }
+            val staleSports = sportDao.getAllSports().filterNot { it.sportId in newSportIds }
+
+            // Delete events that are not in the new data
             tx.run {
+                // Remove events not in new data
+                if (staleEvents.isNotEmpty()) {
+                    sportDao.deleteEvents(staleEvents.map { it.eventId })
+                }
+                // Remove sports not in new data (cascade deletes their events)
+                if (staleSports.isNotEmpty()) {
+                    sportDao.deleteSports(staleSports.map { it.sportId })
+                }
+                // Insert or update fresh data
                 sportDao.insertSports(sportsEntities)
                 sportDao.insertEvents(eventsEntities)
             }

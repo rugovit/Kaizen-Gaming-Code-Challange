@@ -26,7 +26,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 
-
 class SportsRepositoryImplTest {
 
     private lateinit var txRunner: TransactionRunner
@@ -40,10 +39,13 @@ class SportsRepositoryImplTest {
         sportDao = mock()
         apiService = mock()
 
+        // Default: no stale sports
+        whenever(sportDao.getAllSports()).thenReturn(emptyList())
+
         whenever(txRunner.run(any<suspend () -> Any?>()))
             .thenAnswer { invocation ->
                 @Suppress("UNCHECKED_CAST")
-                runBlocking {  (invocation.getArgument<suspend () -> Any?>(0))()}
+                runBlocking { (invocation.getArgument<suspend () -> Any?>(0))() }
             }
         repository = SportsRepositoryImpl(txRunner, sportDao, apiService)
     }
@@ -61,7 +63,7 @@ class SportsRepositoryImplTest {
     }
 
     @Test
-    fun `syncSportsData succeeds and updates database`() = runTest {
+    fun `syncSportsData succeeds and updates database including deleting stale sports`() = runTest {
         val storedEvents = listOf(
             EventEntity("e1", "s1", "team1-team2", 1_749_615_901L, true),
             EventEntity("e2", "s1", "team3-team4", 1_749_613_901L, false)
@@ -75,7 +77,9 @@ class SportsRepositoryImplTest {
                 )
             )
         )
-
+        // Add a stale sport in DB
+        val staleSport = SportEntity("old", "OldSport")
+        whenever(sportDao.getAllSports()).thenReturn(listOf(staleSport))
         whenever(apiService.getSports()).thenReturn(networkSports)
         whenever(sportDao.getAllEvents()).thenReturn(storedEvents)
         val expectedPojo = listOf(
@@ -85,8 +89,9 @@ class SportsRepositoryImplTest {
 
         val result = repository.syncSportsData()
 
-        // verify deletion of "e1"
+        // verify deletion of stale event and sport
         verify(sportDao).deleteEvents(listOf("e1"))
+        verify(sportDao).deleteSports(listOf("old"))
 
         // verify inserts
         verify(sportDao).insertSports(networkSports.map { it.toEntity() })
@@ -106,11 +111,14 @@ class SportsRepositoryImplTest {
             EventEntity("e1", "s1", "game", 0L, false)
         )
         val networkSports = listOf(
-            SportNetwork("s1", "Sport1", listOf(
-                EventNetwork("e1", "FOOT", "game", 0L)
-            ))
+            SportNetwork(
+                "s1", "Sport1", listOf(
+                    EventNetwork("e1", "FOOT", "game", 0L)
+                )
+            )
         )
-
+        // No stale sports
+        whenever(sportDao.getAllSports()).thenReturn(listOf(SportEntity("s1", "Sport1")))
         whenever(apiService.getSports()).thenReturn(networkSports)
         whenever(sportDao.getAllEvents()).thenReturn(storedEvents)
         whenever(sportDao.getSportsWithEvents()).thenReturn(
@@ -120,21 +128,28 @@ class SportsRepositoryImplTest {
         repository.syncSportsData()
 
         verify(sportDao, never()).deleteEvents(any())
+        verify(sportDao, never()).deleteSports(any())
     }
 
     @Test
-    fun `syncSportsData empty API deletes all events`() = runTest {
+    fun `syncSportsData empty API deletes all events and sports`() = runTest {
         val storedEvents = listOf(
             EventEntity("e1", "s1", "game", 0L, false)
         )
+        val storedSports = listOf(
+            SportEntity("s1", "Sport1"),
+            SportEntity("s2", "Sport2")
+        )
         whenever(apiService.getSports()).thenReturn(emptyList())
         whenever(sportDao.getAllEvents()).thenReturn(storedEvents)
+        whenever(sportDao.getAllSports()).thenReturn(storedSports)
         whenever(sportDao.getSportsWithEvents()).thenReturn(emptyList())
 
         repository.syncSportsData()
 
         // all old IDs should be deleted
         verify(sportDao).deleteEvents(listOf("e1"))
+        verify(sportDao).deleteSports(listOf("s1", "s2"))
     }
 
     @Test
@@ -142,10 +157,13 @@ class SportsRepositoryImplTest {
         val stored = listOf(
             EventEntity("e1", "s1", "game", 0L, true)
         )
+        whenever(sportDao.getAllSports()).thenReturn(listOf(SportEntity("s1", "Sport1")))
         val networkSports = listOf(
-            SportNetwork("s1", "Sport1", listOf(
-                EventNetwork("e1", "FOOT", "game", 0L)
-            ))
+            SportNetwork(
+                "s1", "Sport1", listOf(
+                    EventNetwork("e1", "FOOT", "game", 0L)
+                )
+            )
         )
 
         whenever(apiService.getSports()).thenReturn(networkSports)
