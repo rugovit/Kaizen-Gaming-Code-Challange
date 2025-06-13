@@ -1,10 +1,16 @@
 package com.rugovit.kaizengamingcodechallange.ui.features.sports.views
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -211,7 +217,17 @@ fun SportsScreenContent(
                                 enter = expandVertically(expandFrom = Alignment.Top) + fadeIn(),
                                 exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
                             ) {
-                                if (displayed.isNotEmpty()) {
+                                AnimatedContent(
+                                    targetState = showOnlyFavs,
+                                    transitionSpec = {
+                                        val exitAnim  = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+                                        val enterAnim = expandVertically(expandFrom = Alignment.Top) + fadeIn()
+                                        ContentTransform(
+                                            targetContentEnter = enterAnim,
+                                            initialContentExit = exitAnim
+                                        ) }
+                                ) { filterFavs ->
+                                    //val displayed = if (filterFavs) events.filter { it.isFavorite } else events
                                     Column {
                                         displayed.chunked(4).forEach { rowEvents ->
                                             Row(
