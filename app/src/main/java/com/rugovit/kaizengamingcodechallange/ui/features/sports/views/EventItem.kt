@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rugovit.kaizengamingcodechallange.R
 import com.rugovit.kaizengamingcodechallange.ui.features.sports.models.Event
+import com.rugovit.kaizengamingcodechallange.ui.theme.KaizenGamingCodeChallangeTheme
 import java.util.Locale
 
 @Composable
@@ -93,19 +94,21 @@ fun EventItem(
 @Preview(showBackground = true)
 @Composable
 fun EventItemPreview() {
-    val event = Event(
-        id = "e1",
-        sportId = "sport1",
-        startTime = getRandTime(),
-        competitor1 = "Team A",
-        competitor2 = "Team B",
-        isFavorite = false
-    )
-    EventItem(
-        event = event,
-        currentTime = System.currentTimeMillis() / 1000,
-        onToggleFavorite = {}
-    )
+    KaizenGamingCodeChallangeTheme {
+        val event = Event(
+            id = "e1",
+            sportId = "sport1",
+            startTime = getRandTime(),
+            competitor1 = "Team A",
+            competitor2 = "Team B",
+            isFavorite = false
+        )
+        EventItem(
+            event = event,
+            currentTime = System.currentTimeMillis() / 1000,
+            onToggleFavorite = {}
+        )
+    }
 }
 fun getRandTime(): Long {
     return (System.currentTimeMillis() + (60_000L * (60 + (0..480).random())))/1000 // 1 minute to 8 minutes ahead
