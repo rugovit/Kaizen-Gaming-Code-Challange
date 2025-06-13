@@ -1,8 +1,16 @@
 package com.rugovit.kaizengamingcodechallange.ui.features.sports.views
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,7 +60,6 @@ fun SportsScreen(viewModel: SportsViewModel = koinViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Handle effects (omitted for brevity, as in original)
     SportsScreenContent(
         uiState = uiState,
         onToggleFavorite = { eventId -> viewModel.process(UiIntent.ToggleFavorite(eventId)) },
@@ -67,7 +74,6 @@ fun SportsScreenContent(
     onToggleFavorite: (String) -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
-    // Copy the Scaffold and its content from SportsScreen
     val listState = rememberLazyListState()
     val freezeTime = remember { mutableStateOf(uiState.currentTime) }
     if (!listState.isScrollInProgress) freezeTime.value = uiState.currentTime
@@ -96,13 +102,15 @@ fun SportsScreenContent(
                 .padding(padding)
         ) {
             if (uiState.isLoading && uiState.sports.isEmpty()) {
+                // Initial load spinner
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             } else {
                 LazyColumn(
                     state = listState,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
                     uiState.sports.forEach { sport ->
@@ -110,6 +118,7 @@ fun SportsScreenContent(
                         val showOnlyFavs = showFavsMap.getOrPut(sport.id) { false }
                         val displayed = if (showOnlyFavs) sport.events.filter { it.isFavorite } else sport.events
 
+                        // Header item
                         item(key = "header_${sport.id}") {
                             Surface(
                                 color = MaterialTheme.colorScheme.background,
@@ -152,24 +161,33 @@ fun SportsScreenContent(
                             }
                         }
 
-                        if (isExpanded && displayed.isNotEmpty()) {
-                            displayed.chunked(4).forEachIndexed { rowIndex, rowEvents ->
-                                item(key = "row_${sport.id}_$rowIndex") {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(horizontal = 8.dp),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                    ) {
-                                        rowEvents.forEach { event ->
-                                            EventItem(
-                                                event = event,
-                                                currentTime = timeToUse,
-                                                onToggleFavorite = onToggleFavorite
-                                            )
-                                        }
-                                        if (rowEvents.size < 4) repeat(4 - rowEvents.size) {
-                                            Spacer(modifier = Modifier.width(92.dp))
+                        // Events item with animation
+                        item(key = "events_${sport.id}") {
+                            AnimatedVisibility(
+                                visible = isExpanded,
+                                enter = expandVertically(expandFrom = Alignment.Top) + fadeIn(),
+                                exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+                            ) {
+                                if (displayed.isNotEmpty()) {
+                                    Column {
+                                        displayed.chunked(4).forEach { rowEvents ->
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(horizontal = 8.dp),
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                            ) {
+                                                rowEvents.forEach { event ->
+                                                    EventItem(
+                                                        event = event,
+                                                        currentTime = timeToUse,
+                                                        onToggleFavorite = onToggleFavorite
+                                                    )
+                                                }
+                                                if (rowEvents.size < 4) repeat(4 - rowEvents.size) {
+                                                    Spacer(modifier = Modifier.width(92.dp))
+                                                }
+                                            }
                                         }
                                     }
                                 }
